@@ -1,1 +1,1 @@
-# vkj-udagram-dev
+# udagram-vj-dev
