@@ -21,7 +21,7 @@ provider:
     GROUPS_TABLE: Groups-${self:provider.stage}
     IMAGES_TABLE: Images-${self:provider.stage}
     IMAGE_ID_INDEX: ImageIdIndex-${self:provider.stage}
-    IMAGE_S3_BUCKET: serverless-VKJ-udagram-images-${self:provider.stage}
+    IMAGE_S3_BUCKET: serverless-vkj-udagram-images-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
 
   iamRoleStatements:
