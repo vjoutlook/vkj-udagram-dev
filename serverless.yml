@@ -115,7 +115,7 @@ functions:
             description: Create a new Image into group
             requestModels:
               'application/json': ImageRequest
-  SendUploadNotifications:
+  SendUploadedNotifications:
     handler: src/lambda/s3/sendNotifications.handler
 
 resources:
@@ -134,7 +134,7 @@ resources:
       Properties:
         BucketName: ${self:provider.environment.IMAGE_S3_BUCKET}
         NotificationConfiguration:
-          LambdaConfiguration:
+          LambdaConfigurations:
           - Event: s3:ObjectCreated:*
             Function: !GetAtt SendUploadedNotificationsLambdaFunction.Arn
         CorsConfiguration:
