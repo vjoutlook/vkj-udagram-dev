@@ -20,6 +20,7 @@ provider:
   environment:
     GROUPS_TABLE: Groups-${self:provider.stage}
     IMAGES_TABLE: Images-${self:provider.stage}
+    CONNECTIONS_TABLE: Connections1-${self:provider.stage}
     IMAGE_ID_INDEX: ImageIdIndex-${self:provider.stage}
     IMAGE_S3_BUCKET: serverless-vkj-udagram-images-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
@@ -48,6 +49,12 @@ provider:
         - s3:GetObject
       Resource: arn:aws:s3:::${self:provider.environment.IMAGE_S3_BUCKET}/*
 
+    - Effect: Allow
+      Action:
+        - dynamodb:Scan
+        - dynamodb:PutItem
+        - dynamodb:DeleteItem
+      Resource: arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.CONNECTIONS_TABLE}
 
 
 custom:
@@ -118,6 +125,18 @@ functions:
   SendUploadedNotifications:
     handler: src/lambda/s3/sendNotifications.handler
 
+  ConnectHandler:
+    handler: src/websocket/connect.handler
+    events:
+      - websocket:
+          route: $connect
+
+  DisconnectHandler:
+    handler: src/websocket/disconnect.handler
+    events:
+      - websocket:
+          route: $disconnect
+
 resources:
   Resources:
     RequestBodyValidator:
@@ -186,6 +205,18 @@ resources:
                 KeyType: HASH
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.GROUPS_TABLE}
+
+    ConnectionsDynamoDBTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:provider.environment.CONNECTIONS_TABLE}
 
     ImagesDynamoDBTable:
       Type: AWS::DynamoDB::Table
