@@ -115,7 +115,8 @@ functions:
             description: Create a new Image into group
             requestModels:
               'application/json': ImageRequest
-
+  SendUploadNotifications:
+    handler: src/lambda/s3/sendNotifications.handler
 
 resources:
   Resources:
@@ -132,6 +133,10 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: ${self:provider.environment.IMAGE_S3_BUCKET}
+        NotificationConfiguration:
+          LambdaConfiguration:
+          - Event: s3:ObjectCreated:*
+            Function: !GetAtt SendUploadedNotificationsLambdaFunction.Arn
         CorsConfiguration:
           CorsRules:
             -
@@ -146,6 +151,15 @@ resources:
                 - DELETE
                 - HEAD
               MaxAge: 3000
+
+    SendUploadedNotificationsPermission:
+      Type: AWS::Lambda::Permission
+      Properties:
+        FunctionName: !Ref SendUploadedNotificationsLambdaFunction
+        Principal: s3.amazonws.com
+        Action: lambda:InvokeFunction
+        SourceAccount: !Ref AWS::AccountId
+        SourceArn: arn:aws:s3:::${self.provider.environment.IMAGE_S3_BUCKET}
 
     BucketPolicy:
       Type: AWS::S3::BucketPolicy
