@@ -16,7 +16,7 @@ const s3 = new AWS.S3( {
 })
 
 const bucketName = process.env.IMAGE_S3_BUCKET
-const urlExpiration = process.env.SINNED_URL_EXPIRATION
+const urlExpiration = process.env.SIGNED_URL_EXPIRATION
 
 
 
