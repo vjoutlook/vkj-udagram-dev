@@ -156,7 +156,7 @@ resources:
       Type: AWS::Lambda::Permission
       Properties:
         FunctionName: !Ref SendUploadedNotificationsLambdaFunction
-        Principal: s3.amazonws.com
+        Principal: s3.amazonaws.com
         Action: lambda:InvokeFunction
         SourceAccount: !Ref AWS::AccountId
         SourceArn: arn:aws:s3:::${self:provider.environment.IMAGE_S3_BUCKET}
