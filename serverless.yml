@@ -10,7 +10,7 @@ plugins:
   - serverless-webpack
   - serverless-reqvalidator-plugin
   - serverless-aws-documentation
-
+  
 provider:
   name: aws
   runtime: nodejs12.x
@@ -24,6 +24,7 @@ provider:
     IMAGE_ID_INDEX: ImageIdIndex-${self:provider.stage}
     IMAGE_S3_BUCKET: serverless-vkj-udagram-images-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
+    REGION: ${self:provider.region}
 
   iamRoleStatements:
     - Effect: Allow
@@ -123,6 +124,10 @@ functions:
             requestModels:
               'application/json': ImageRequest
   SendUploadedNotifications:
+    environment:
+      STAGE: ${self:provider.stage}
+      APP_ID:
+        Ref: WebsocketsApi
     handler: src/lambda/s3/sendNotifications.handler
 
   ConnectHandler:
