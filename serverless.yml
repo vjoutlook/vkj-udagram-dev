@@ -142,7 +142,7 @@ functions:
       - websocket:
           route: $disconnect
 
-  SyncWithElasticSearch:
+  SyncWithElasticsearch:
     handler: src/lambda/dynamoDb/elasticSearchSync.handler
     events:
       - stream:
