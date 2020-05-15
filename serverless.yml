@@ -144,6 +144,11 @@ functions:
 
   SyncWithElasticsearch:
     handler: src/lambda/dynamoDb/elasticSearchSync.handler
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - es:*
+        Resource: arn:aws:es::${self:provider.region}:*:domain/log-search-${self:provider.stage}
     events:
       - stream:
         type: dynamodb
