@@ -151,8 +151,8 @@ functions:
         Resource: arn:aws:es::${self:provider.region}:*:domain/log-search-${self:provider.stage}
     events:
       - stream:
-        type: dynamodb
-        arn: !GetAtt ImagesDynamoDBTable.StreamArn
+          type: dynamodb
+          arn: !GetAtt ImagesDynamoDBTable.StreamArn
 
 resources:
   Resources:
