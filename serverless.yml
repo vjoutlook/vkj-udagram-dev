@@ -85,8 +85,8 @@ functions:
               - - "arn:aws:sns"
                 - Ref: "AWS::Region"
                 - Ref: "AWS::AccountId"
-                - myTopic
-          topicName: myTopic
+                - ${self:custom.topicName}
+          topicName: ${self:custom.topicName}
 
   GetGroups:
     handler: src/lambda/http/getGroups.handler
